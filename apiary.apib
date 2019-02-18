@@ -41,16 +41,16 @@ paths:
                     title: Bad request
                     detail: "missing parameter in request"
 
-  /blogs:
+  /posts:
     get:
-      summary: Gets a list of all blogs
+      summary: Gets a list of all posts
       responses:
         '200':
           description: OK
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/BlogItems'
+                $ref: '#/components/schemas/PostItems'
         '404':
           description: Not found
           content:
@@ -68,10 +68,10 @@ paths:
         content:
           application/vnd.api+json:
             schema:
-              $ref: '#/components/schemas/BlogItem'
+              $ref: '#/components/schemas/PostItem'
             example:
               data:
-                type: "blog"
+                type: "post"
                 attributes:
                   title: quite the title
                   text: and some text
@@ -82,7 +82,7 @@ paths:
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/SingleBlogResponse'
+                $ref: '#/components/schemas/SinglePostResponse'
         '401':
           description: Unauthorized
           content:
@@ -101,18 +101,18 @@ paths:
                     title: Bad request
                     detail: "missing parameter in request"
       
-  /blogs/{blogId}:
+  /posts/{postId}:
     get:
-      summary: Returns a single blog by ID
+      summary: Returns a single post by ID
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
       responses:
         '200':
           description: OK
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/SingleBlogResponse'
+                $ref: '#/components/schemas/SinglePostResponse'
         '404':
           description: Not found
           content:
@@ -125,20 +125,20 @@ paths:
       security:
         - BasicAuth: []
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BlogItem'
+              $ref: '#/components/schemas/PostItem'
       responses:
         '200':
           description: OK
           content:
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/SingleBlogResponse'
+                $ref: '#/components/schemas/SinglePostResponse'
         '404':
           description: Not found
           content:
@@ -168,7 +168,7 @@ paths:
       security:
         - BasicAuth: []
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
       responses:
         '204':
           description: Deleted
@@ -185,11 +185,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           
-  /blogs/{blogId}/comments:
+  /posts/{postId}/comments:
     get:
       summary: Get a list of comments associated with a single post
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
       responses:
         '200':
           description: OK
@@ -204,11 +204,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/404List'
     post:
-      summary: Post a comment to a blog
+      summary: Post a comment to a post
       security:
         - BasicAuth: []
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
       requestBody:
         required: true
         content:
@@ -242,11 +242,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           
-  /blogs/{blogId}/comments/{commentId}:
+  /posts/{postId}/comments/{commentId}:
     get:
       summary: Get a comment by ID
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
         - $ref: '#/components/parameters/CommentId'
       responses:
         '200':
@@ -267,7 +267,7 @@ paths:
       security:
         - BasicAuth: []
       parameters:
-        - $ref: '#/components/parameters/BlogId'
+        - $ref: '#/components/parameters/PostId'
         - $ref: '#/components/parameters/CommentId'
       responses:
         '204':
@@ -292,7 +292,7 @@ components:
       scheme: basic
       
   schemas:
-    Blog:
+    Post:
       type: object
       properties:
         title:
@@ -307,20 +307,20 @@ components:
         - title
         - text
     
-    BlogItems:
+    PostItems:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/BlogItem'
+            $ref: '#/components/schemas/PostItem'
             
-    BlogItem:
+    PostItem:
       type: object
       properties:
         type:
           type: string
-          example: blog
+          example: post
         id:
           type: string
           example: "1"
@@ -329,7 +329,7 @@ components:
           properties:
             title:
               type: string
-              example: "First blog"
+              example: "First post"
             text:
               type: string
               example: with some text
@@ -337,11 +337,11 @@ components:
               type: string
               example: "2003"
               
-    SingleBlogResponse:
+    SinglePostResponse:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/BlogItem'
+          $ref: '#/components/schemas/PostItem'
     User:
       type: object
       properties:
@@ -368,7 +368,7 @@ components:
           type: string
         body:
           type: string
-        blog_id:
+        post_id:
           type: integer
           
     CommentItem:
@@ -389,7 +389,7 @@ components:
             body:
               type: string
               example: first comment
-            blog_id:
+            post_id:
               type: string
               example: "1"
               
@@ -487,8 +487,8 @@ components:
             type: object
 
   parameters:
-    BlogId:
-      name: blogId
+    PostId:
+      name: postId
       in: path
       required: true
       schema:
