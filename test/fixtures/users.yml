@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+Mel:
   username: MyString
   password: MyString
   full_name: MyString
 
-two:
+Mello:
   username: MyString
   password: MyString
   full_name: MyString
