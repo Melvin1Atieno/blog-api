@@ -2,21 +2,25 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
+  def setup
+    @user = users(:one)
+  end
+
   test 'invalid without username' do
-    user = User.new(password: 'mypassword', full_name: 'new user')
-    refute user.valid?
-    assert_not_nil user.errors[:username]
+    @user.username = nil
+    refute @user.valid?, 'saved user without username'
+    assert_not_nil @user.errors[:username]
   end
 
   test 'invalid without password' do
-    user = User.new(username: 'user', full_name: 'new user')
-    refute user.valid?
-    assert_not_nil user.errors[:password]
+    @user.password = nil
+    refute @user.valid?, 'saved user without password'
+    assert_not_nil @user.errors[:password]
   end
 
   test 'invalid without fullname' do
-    user = User.new(username: 'user', password: 'mypassword')
-    refute user.valid?
-    assert_not_nil user.errors[:full_name]
+    @user.full_name = nil
+    refute @user.valid?, 'saved user without full name'
+    assert_not_nil @user.errors[:full_name]
   end
 end
