@@ -1,0 +1,367 @@
+{
+	"info": {
+		"_postman_id": "ab842b92-cf84-4bfc-b7c2-7d5a75f27114",
+		"name": "Blogging System API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/users",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve blogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add post",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve blog post by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Blog Post",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a blog Post",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve Comments of a blog",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}/comments",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a comment",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}/comments",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Comment By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}/comments/{commentId}",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}",
+						"comments",
+						"{commentId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Comment by Id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0/posts/{postId}/comments/{commentId}",
+					"protocol": "https",
+					"host": [
+						"virtserver",
+						"swaggerhub",
+						"com"
+					],
+					"path": [
+						"tomshy",
+						"Searails_Blog_API",
+						"1.0.0",
+						"posts",
+						"{postId}",
+						"comments",
+						"{commentId}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
