@@ -23,7 +23,7 @@ module Api
                 }}, status: :created_at
                 else
                     render json: {errors:[
-                                data:@user.errors.each
+                                data:@user.errors
                             ]
                         }
                 end
