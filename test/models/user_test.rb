@@ -23,4 +23,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.save, 'saved user without full name'
     assert_not_nil @user.errors[:full_name]
   end
+
+  # test for post association 
+  test 'should have many posts' do
+    assert_equal 2, @user.posts.size
+  end
 end

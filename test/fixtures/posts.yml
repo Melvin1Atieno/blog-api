@@ -3,9 +3,9 @@
 one:
   title: MyString
   text: MyString
-  user: Mel
+  user: one
 
 two:
   title: MyString
   text: MyString
-  user: Mel
+  user: one
