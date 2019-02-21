@@ -14,6 +14,17 @@ module Api
                 }}, status: 200
             end
 
+            # get post with id
+            def show
+                post = Post.find(params[:id])
+                render json: {data:{	
+                    type: 'post',
+                    id: post.id,	
+                    attributes:{                                                                             title: post.title,
+                             text: post.text}	
+                }}, status: 200
+            end
+
             # create a post
             def create
                 post = Post.new(post_params)
@@ -40,14 +51,7 @@ module Api
                 end
             end
 
-            def show
-                post = Post.find(params[:id])
-                render json: {data:{	
-                    type: 'post',
-                    id: post.id	
-                    attributes: post	
-                }}, status: 200
-            end
+            
 
             private
 

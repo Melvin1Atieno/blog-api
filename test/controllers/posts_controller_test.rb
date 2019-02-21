@@ -2,14 +2,6 @@ require 'test_helper'
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
  
-  setup do
-    @post = posts(:one)
-  end
-
-  teardown do
-    Rails.cache.clear
-  end
-
   test "Should return all posts" do	
       
       get '/api/v1/posts'
@@ -18,7 +10,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
   test "Should create a new post" do
     assert_difference('Post.count'){
-     post '/api/v1/posts',
+      post '/api/v1/posts',
       params: {
         "title": "post title",
         "text": "This is the text contained in the post"
