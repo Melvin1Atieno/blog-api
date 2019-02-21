@@ -13,7 +13,7 @@ class PostTest < ActiveSupport::TestCase
   end
 
   test 'invalid without text' do
-    @post.body = nil
+    @post.text = nil
     assert_not @post.save, 'Saved post without text'
     assert_not_nil @post.errors[:text]
   end
