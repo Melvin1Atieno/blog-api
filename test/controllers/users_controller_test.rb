@@ -2,13 +2,21 @@ require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
 
+  setup do
+    @user = users(:one)
+  end
+
+  teardown do
+    Rails.cache.clear
+  end
+
   test "should create user" do
     assert_difference('User.count') {
       post '/api/v1/users',
       params:
-      {"username": "username",
-      "password": "password",
-      "full_name": "full name"},
+      {username: @user.username,
+      password: @user.password,
+      full_name: @user.full_name},
       headers: {"Accept": "Application/json"}
   }
   assert_response 201
@@ -19,8 +27,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post '/api/v1/users',
       params:
       {
-      "password": "password",
-      "full_name": "full name"},
+      password: @user.password,
+      full_name: @user.full_name},
       headers: {"Accept": "Application/json"}
   }
   assert_response 400
@@ -31,8 +39,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post '/api/v1/users',
       params:
       {
-      "username": "username",
-      "full_name": "full name"},
+      username:@user.username,
+      full_name: @user.full_name},
       headers: {"Accept": "Application/json"}
   }
   assert_response 400
@@ -43,8 +51,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post '/api/v1/users',
       params:
       {
-      "username": "username",
-      "password": "password"},
+      username:@user.username,
+      password:@user.password},
       headers: {"Accept": "Application/json"}
   }
   assert_response 400
