@@ -2,16 +2,6 @@ module Api
     module V1
         class UsersController < ApplicationController
         
-            def index
-                @users = User.order('created_at DESC')
-                render json: {data:{
-                    type: 'user',
-                    attributes: {
-                        data:@user 
-                    }
-                }}, status: :ok
-            end
-
             def create
                 @user = User.new(user_params)
                 if @user.save
@@ -20,15 +10,19 @@ module Api
                     attributes: {
                         data:@user 
                     }
-                }}, status: :created_at
+                }}, status: 201
                 else
                     render json: {errors:[
-                                data:@user.errors
+                                {
+                                 status: "400",
+                                 title: "Bad request",
+                                 detail:@user.errors
+                                 }
+                
                             ]
-                        }
+                        }, status: 400
                 end
             end
-
             private
 
             def user_params
