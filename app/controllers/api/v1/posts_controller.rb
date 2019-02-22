@@ -16,25 +16,21 @@ module Api
 
             # get post with id
             def show
-                post = Post.find(params[:id])
-                if post.exists?
-                    render json: {data:{	
-                    type: 'post',
-                    id: post.id,	
-                    attributes:{                                                                             title: post.title,
-                             text: post.text}	
-                }}, status: 200  
-                else
+                # post = Post.find("#{params[:id]}")
+                if Post.find_by_id(params[:id]).nil?
                     render json: { 
-                        errors:[
-                        {
-                            status: "404",
-                            title: "Not found",
-                            detail: post.errors
-                        }
-                    ]
+                       data: "null"
 
                     }, status: 404
+
+                else
+                  post = Post.find(params[:id])
+                    render json: {data:{	
+                        type: 'post',
+                        id: post.id,	
+                        attributes:{                                                                             title: post.title,
+                                 text: post.text}	
+                    }}, status: 200  
                 end
             end
 

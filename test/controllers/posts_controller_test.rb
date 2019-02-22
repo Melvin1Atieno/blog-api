@@ -29,12 +29,12 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get post by id" do
-    get '/api/v1/posts/', params: {id: @post.id}
+    get api_v1_posts_url(@post)
     assert_response 200
   end
 
   test "Should return error if post with given id does not exist" do
-    get '/api/v1/posts/', params: {id:'6712'}
+    get api_v1_post_path(1234)
     assert_response 404
   end 
 end
