@@ -16,8 +16,6 @@ module Api
 
             # get post with id
             def show
-                # post = Post.find("#{params[:id]}")
-                # pass in keyword argument
                 if Post.find_by_id(params[:id]).nil?
                     render json: { 
                        data: "null"
@@ -37,13 +35,15 @@ module Api
 
             # create a post
             def create
-                post = Post.new(post_params)
-                if post.save
+                # create user first
+                @user = User.find(params[:user_id])
+                @post = @user.posts.create(post_params)
+                if @post.save
                     render json: {
                         data: {
                             type: 'post',
                             attributes: {
-                                data: post
+                                data: @post
                             }
                         }
                     }, status: 201
@@ -53,7 +53,7 @@ module Api
                         {
                             status: "400",
                             title: "Bad request",
-                            detail: post.errors
+                            detail: @post.errors
                         }
                     ]
 
@@ -68,8 +68,9 @@ module Api
 
                     }, status: 404
                 else
-                    post = Post.find(params[:id])
-                    post.update(post_params)
+                    @user = User.find(params[:user_id])
+                    @post = Post.find(params[:id])
+                    @user.@post.update(post_params)
                     render json: {
                         data: {
                             type: 'post',
@@ -87,10 +88,11 @@ module Api
                        data: "null"
                     }, status: 404
                 else
+                    @user = User.find(params[:user_id])
                     post = Post.find(params[:id])
                     post_comments = post.comments.find(params[:id])
                     post_comments.destroy
-                    post.destroy
+                    @user.post.destroy
                     render status: 204
                 end
             end

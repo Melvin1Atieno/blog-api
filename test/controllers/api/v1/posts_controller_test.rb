@@ -1,9 +1,10 @@
 require 'test_helper'
 
-class PostsControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
  
   setup do
     @post = posts(:one)
+    @user = users(:one)
   end
 
   teardown do
@@ -20,7 +21,9 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
       post api_v1_posts_url,
       params: {
         title: @post.title,
-        text: @post.text
+        text: @post.text,
+        User_id: @user.id
+
       },
       headers: {"Accept": "Application/json"}
     end
@@ -42,8 +45,10 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
       patch api_v1_post_path(@post.id),
       params: { 
         title: "updated title",
-        text: "updated text"
+        text: "updated text",
+        user_id: @user.id
       },
+      pry
     headers: {"Accept": "Application/json"}
     @post.reload
     assert_response 200
