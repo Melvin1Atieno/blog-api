@@ -8,4 +8,4 @@ one:
 two:
   body: MyString
   user: one
-  post: two
+  post: one
