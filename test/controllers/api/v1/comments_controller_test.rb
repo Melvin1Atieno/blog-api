@@ -14,7 +14,6 @@ class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test "Should get all comments associated with a post" do
     get api_v1_post_comments_path(@post.id)
-    # binding.pry
     assert_response 200
   end
 
@@ -25,16 +24,15 @@ class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should be able to create a comment for a specific post" do
     assert_difference('Comment.count') do
-      post api_v1_post_comments_path(user_id:@user.id,post_id:@post.id),
+      post api_v1_post_comments_path(user_id:@user.id, post_id:@post.id),
       params: {
         body:"This is a new comment"
       },
       headers: {"Accept": "Application/json"}
-      binding.pry
+    end
+    assert_response 201
   end
-  assert_response 201
-  end
-
+  
   test "Should be able to get a single comment" do
     get api_v1_comment_path(id:@comment.id)
     assert_response 200

@@ -3,8 +3,7 @@ module Api
         class CommentsController < ApplicationController
 
             def index
-                @post = Post.find(params[:post_id])
-                @comments = @post.comments
+                @comments = Comment.all
                 render json: {data:{	
                     type: 'comment',	
                     attributes: {	
@@ -15,14 +14,14 @@ module Api
             end
 
             def create 
-                @user = User.find(params[:user_id])
-                @post = Post.find(params[:post_id])
-                @comment =@user.@post.comments.create(comment_params)
-                if @comment.save
+                @post = Post.find(comment_params[:post_id])
+                @user = Post.find(comment_params[:user_id])
+                @new_comment = Comment.new(comment_params)
+                if @new_comment.save
                     render json: {data:{
                             type: 'post',
                             attributes: {
-                                data: @comment
+                                data: @new_comment
                             }
                         }}, status: 201
                 else
@@ -31,19 +30,68 @@ module Api
                         {
                             status: "400",
                             title: "Bad request",
-                            detail: @comment.errors
+                            detail: @new_comment.errors
                         }]
 
                     }, status: 400
                 end
-            
+            end
+            def destroy
+                if Comment.find_by_id(params[:id]).nil?
+                    render json: { 
+                       data: "null"
+                    }, status: 404
+                else
+                    @comment = Comment.find(params[:id])
+                    @comment.destroy
+                    render json: {data:{
+                            type: 'comment',
+                            attributes: {
+                                data: "deleted"
+                            }
+                        }}, status: 204
+                end
             end
 
+            def show
+                if Comment.find_by_id(params[:id]).nil?
+                    render json: { 
+                       data: "null"
+
+                    }, status: 404
+
+                else
+                  @comment = Comment.find(params[:id])
+                  render json: {data:{
+                    type: 'post',
+                    attributes: {
+                        data: @comment
+                    }
+                }}, status: 200
+                end
+            end
+
+            def update
+                if Comment.find_by_id(params[:id]).nil?
+                    render json: { 
+                       data: "null"
+                    }, status: 404
+                else
+                    @comment = Comment.find(params[:id])
+                    @updated_Comment = @comment.update(comment_params)
+                    render json: {data:{
+                        type: 'post',
+                        attributes: {
+                            data: @updated_comment
+                        }
+                    }}, status: 200
+                end
+            end
 
             private
 
             def comment_params
-                params.permit(:body, :user_id, :post_id)
+                params.permit(:body,:post_id,:user_id)
             end
 
         end
