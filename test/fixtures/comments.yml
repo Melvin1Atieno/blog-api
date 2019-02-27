@@ -2,10 +2,10 @@
 
 one:
   body: MyString
-  user: Mel
+  user: one
   post: one
 
 two:
   body: MyString
-  user: Mel
-  post: two
+  user: one
+  post: one
