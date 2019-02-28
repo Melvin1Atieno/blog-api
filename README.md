@@ -1,24 +1,29 @@
-# README
+# Blog
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple blog API that allows users to
 
-Things you may want to cover:
+1. Register.
+2. Create blog posts
+3. Comment on the blog posts.
 
-* Ruby version
+## Spec
 
-* System dependencies
+Checkout the [swagger API specification](https://app.swaggerhub.com/apis/Melvin1Atieno/blog-api/1.0.0#/default/post_users)
 
-* Configuration
 
-* Database creation
+## Test
 
-* Database initialization
+1. Clone the repo
+2. cd into repo directory
+3. Buid image `docker-compose build`
+4. Run container `docker-compose up -d`
+5. Make requests in postman.
 
-* How to run the test suite
+## Available endpoinst
 
-* Services (job queues, cache servers, search engines, etc.)
+Registration
 
-* Deployment instructions
+`http/localhost/api/v1/users`
 
-* ...
+Authentication
+`http/localhost/api/v1/authenticate`
