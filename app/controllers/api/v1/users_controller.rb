@@ -9,7 +9,8 @@ module Api
                     render json: {data:{
                     type: 'user',
                     attributes: {
-                        data:@user 
+                        username: @user.username,
+                        full_name:@user.full_name
                     }
                 }}, status: 201
                 else
