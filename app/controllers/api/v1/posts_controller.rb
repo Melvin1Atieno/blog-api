@@ -1,3 +1,4 @@
+require 'pry'
 module Api
     module V1
         class PostsController < ApplicationController
@@ -26,8 +27,11 @@ module Api
                   @post = Post.find(params[:id])
                   render json: {data:{
                     type: 'post',
+                    id: @post.id,
                     attributes: {
-                        data: @post
+                        title: @post.title,
+                        text: @post.text,
+                        author_id: @post.user_id
                     }
                 }}, status: 200
                 end
@@ -36,12 +40,17 @@ module Api
             # create a post
             def create
                 @user = User.find(params[:user_id])
-                @post = @user.posts.create(post_params)
+                @post = Post.new(post_params)
+                @user.posts << @post
+                # binding.pry
                 if @post.save
                     render json: {data:{
                             type: 'post',
+                            id: @post.id,
                             attributes: {
-                                data: @post
+                                title: @post.title,
+                                text: @post.text,
+                                author_id:@post.user_id
                             }
                         }}, status: 201
                 else
@@ -66,11 +75,14 @@ module Api
                     }, status: 404
                 else
                     @post = Post.find(params[:id])
-                    @updated_post =@post.update(post_params)
+                    @updated_post = @post.update(post_params)
                     render json: {data:{
                         type: 'post',
                         attributes: {
-                            data: @updated_post 
+                            title: @post.title,
+                            text: @post.text,
+                            author_id: @post.user_id
+
                         }
                     }}, status: 200
                 end

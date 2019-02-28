@@ -25,7 +25,9 @@ module Api
                     render json: {data:{
                             type: 'post',
                             attributes: {
-                                data: @new_comment
+                                commenter:@user.username,
+                                body: @new_comment.body,
+                                post_id: @post.id
                             }
                         }}, status: 201
                 else
@@ -68,8 +70,11 @@ module Api
                   @comment = Comment.find(params[:id])
                   render json: {data:{
                     type: 'post',
+                    id: @comment.id,
                     attributes: {
-                        data: @comment
+                        commenter_id: @comment.user_id,
+                        body: @comment.body,
+                        post_id: @comment.post_id
                     }
                 }}, status: 200
                 end
