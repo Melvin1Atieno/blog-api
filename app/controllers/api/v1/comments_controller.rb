@@ -1,3 +1,4 @@
+require 'pry'
 module Api
     module V1
         class CommentsController < ApplicationController
@@ -15,8 +16,11 @@ module Api
 
             def create 
                 @post = Post.find(comment_params[:post_id])
-                @user = Post.find(comment_params[:user_id])
+                @user = User.find(comment_params[:user_id])
                 @new_comment = Comment.new(comment_params)
+                @post.comments << @new_comment
+                @user.comments << @new_comment
+                # binding.pry
                 if @new_comment.save
                     render json: {data:{
                             type: 'post',
