@@ -1,4 +1,3 @@
-require 'pry'
 module Api
     module V1
         class CommentsController < ApplicationController
@@ -20,7 +19,6 @@ module Api
                 @new_comment = Comment.new(comment_params)
                 @post.comments << @new_comment
                 @user.comments << @new_comment
-                # binding.pry
                 if @new_comment.save
                     render json: {data:{
                             type: 'post',
