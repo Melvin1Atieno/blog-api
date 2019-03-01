@@ -8,6 +8,7 @@ module Api
                 if @user.save
                     render json: {data:{
                     type: 'user',
+		    id: @user.id,
                     attributes: {
                         username: @user.username,
                         full_name:@user.full_name
