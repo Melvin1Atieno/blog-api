@@ -1,3 +1,4 @@
+require 'jwt'
 class Api::V1::AuthenticationController < ApplicationController
     skip_before_action :authenticate_request
 
