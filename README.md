@@ -6,9 +6,9 @@ A simple blog API that allows users to
 2. Create blog posts
 3. Comment on the blog posts.
 
-## Spec
+## Documentation
 
-Checkout the [swagger API specification](https://app.swaggerhub.com/apis/Melvin1Atieno/blog-api/1.0.0#/default/post_users)
+Checkout the [documentation](https://app.swaggerhub.com/apis-docs/Melvin1Atieno/blog-api/1.0.0#/)to make live requests.
 
 
 ## Test
