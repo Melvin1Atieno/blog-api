@@ -4,12 +4,11 @@ require 'rails/test_help'
 
 
 class ActiveSupport::TestCase 
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
 
-#  
-
-  # Add more helper methods to be used by all tests here...
+  include FactoryBot::Syntax::Methods
+  # setup do
+  #   User.create(username: "registered_user", password: "registered_user_password", full_name: "registered_user_full_name")
+  # end
 end
 
 class ActionDispatch::IntegrationTest

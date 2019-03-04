@@ -2,26 +2,19 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
 
-  def setup
-    @user = users(:one)
+  # def setup
+  #   @user = users(:one)
+  # end
+
+  test 'Should not save user without valid credentials' do
+    @user = User.create
+    assert @user.errors[:username].present?, "Does not contain error fpr invalid username"
+    assert @user.errors[:full_name].present?, "Does not contain error for invalid username"
+    assert @user.errors[:password].present?, "Does not contain error msg for invalid password"
   end
 
-  test 'invalid without username' do
-    @user.username = nil
-    assert_not @user.save, 'saved user without username'
-    assert_not_nil @user.errors[:username]
-  end
-
-  test 'invalid without password' do
-    @user.password = nil
-    assert_not @user.save, 'saved user without password'
-    assert_not_nil @user.errors[:password]
-  end
-
-  test 'invalid without fullname' do
-    @user.full_name = nil
-    assert_not @user.save, 'saved user without full name'
-    assert_not_nil @user.errors[:full_name]
+  test "Should create user with valid credentials" do
+    @user = User.create(users(:one))
   end
 
   # test for post association 
