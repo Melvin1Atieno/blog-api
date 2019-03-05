@@ -1,38 +1,30 @@
 require 'test_helper'
+module Api
+  module V1
+    class AuthenticationControllerTest < ActionDispatch::IntegrationTest
 
-class Api::V1::AuthenticationControllerTest < ActionDispatch::IntegrationTest
+      setup do
+        @user = User.create(username:'username', password:'password',full_name:'full name name')
+      end
+      test 'Should authenticate user with correct credentials'do	
+        post api_v1_authenticate_path, 
+          params:{
+                   username: @user.username,
+                   password: @user.password
+                 },
+          headers: {'Accept': 'application/vnd.api+json'}
+        assert_response 200
+      end
 
-  setup do
-    # register user
-    post api_v1_users_path,
-      params:
-     {
-        username: "registered_user",
-        password: "registered_user_password",
-        full_name: "registered_user_full_name"
-      },
-      headers: {"Accept": "Application/json"}
-  end
-    
-
-
-    test "authenticates user with correct credentials" do	
-    post api_v1_authenticate_path, 
-      params: {
-        username: "registered_user",
-        password: "registered_user_password"
-      },
-      headers: {"Accept": "Application/json"}
-    assert_response 200
-  end
-
-    test "returns error when invalid credentials are passed" do
-      post api_v1_authenticate_path, 
-      params: {
-        username: "registered_user",
-        password: "registered_user_passwor"
-      },
-      headers: {"Accept": "Application/json"}
-    assert_response 401
-    end
+      test "Authenticates fails with invalid credentials" do
+        post api_v1_authenticate_path, 
+        params: {
+          username: @user.username,
+          password: "not_registered_user_password"
+        },
+        headers: {"Accept": "application/vnd.api+json"}
+      assert_response 401
+      end
+   end
+  end 
 end

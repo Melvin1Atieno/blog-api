@@ -4,8 +4,7 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
  
   setup do
     @token = authenticated_user
-    
-    @valid_user = User.find_by_username("valid_user")
+
     @post = posts(:one)
   end
 

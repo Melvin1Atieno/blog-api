@@ -1,31 +1,21 @@
 require 'test_helper'
-
 class UserTest < ActiveSupport::TestCase
-
-  def setup
-    @user = users(:one)
+  setup do
+    @user_with_posts = create(:user_with_posts)
+  end
+  test 'Should not save user without valid credentials' do
+    @new_user = User.create
+    assert @new_user.errors[:username].present?, 'expects username error'
+    assert @new_user.errors[:full_name].present?, 'expects full_name error'
+    assert @new_user.errors[:password].present?, 'expects password error'
+  end
+  test 'Should create user with valid credentials' do
+    assert_difference('User.count') do
+      User.create(attributes_for(:user))
+    end
   end
 
-  test 'invalid without username' do
-    @user.username = nil
-    assert_not @user.save, 'saved user without username'
-    assert_not_nil @user.errors[:username]
-  end
-
-  test 'invalid without password' do
-    @user.password = nil
-    assert_not @user.save, 'saved user without password'
-    assert_not_nil @user.errors[:password]
-  end
-
-  test 'invalid without fullname' do
-    @user.full_name = nil
-    assert_not @user.save, 'saved user without full name'
-    assert_not_nil @user.errors[:full_name]
-  end
-
-  # test for post association 
   test 'should have many posts' do
-    assert_equal 2, @user.posts.size
+    assert_equal 3, @user_with_posts.posts.size
   end
 end

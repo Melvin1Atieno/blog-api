@@ -2,45 +2,31 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 
-
 class ActiveSupport::TestCase 
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
+  include FactoryBot::Syntax::Methods
 
-#  
-
-  # Add more helper methods to be used by all tests here...
+  setup do
+    @request_params = {data:{
+                              type: nil,
+                              attributes: nil
+                            }
+                      }
+  end
 end
-
 class ActionDispatch::IntegrationTest
+  include FactoryBot::Syntax::Methods
 
   def authenticated_user
-    # user
-    @user = {
-        username: "valid_user",
-        password: "valid_password",
-        full_name:  "valid_full_name"
-      }
-
-      
-      # register user
-      post api_v1_users_path,
-      params:@user,
-      headers: {"Accept": "Application/json"}
-      
-      
-      # authenticate user
-      post api_v1_authenticate_path, 
-      params: @user,
-      headers: {"Accept": "Application/json"}
-      
-      
-      # get authorization token
-      
-      @valid_token = JSON.parse(response.body)
-      
-  #  binding.pry
+    @user = create(user)
+    # authenticate user
+    binding.pry
+    post api_v1_authenticate_path, 
+    params: @user,
+    headers: {'Accept': 'application/vnd.api+json'}
+    # get authorization token
+    @valid_token = JSON.parse(response.body)
   return @valid_token
   
   end
 end
+
