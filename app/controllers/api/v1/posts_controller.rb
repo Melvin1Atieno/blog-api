@@ -25,6 +25,7 @@ module Api
 
                 else
                   @post = Post.find(params[:id])
+                  binding.pry
                   render json: {data:{
                     type: 'post',
                     id: @post.id,

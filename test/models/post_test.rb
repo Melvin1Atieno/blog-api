@@ -1,20 +1,17 @@
 require 'test_helper'
 
 class PostTest < ActiveSupport::TestCase
-
-  def setup
-    @post = posts(:one)
+  test 'should not save post without valid credentials' do
+    @post = Post.create
+    assert @post.errors[:title].present?, 'expects missing title error'
+    assert @post.errors[:text].present?, 'expects missing body error'
   end
 
-  test 'invalid without title' do
-    @post.title = nil
-    assert_not @post.save, 'Saved post without title'
-    assert_not_nil @post.errors[:title]
-  end
-
-  test 'invalid without text' do
-    @post.text = nil
-    assert_not @post.save, 'Saved post without text'
-    assert_not_nil @post.errors[:text]
+  test 'should create post' do
+    assert_difference('Post.count') do
+      create(:user) do |user|
+        user.posts.create(attributes_for(:post))
+      end
+    end
   end
 end

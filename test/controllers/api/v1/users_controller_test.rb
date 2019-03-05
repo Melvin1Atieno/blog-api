@@ -3,59 +3,48 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
 
   setup do
-    @user = {
-      username: "test_user",
-      password: "test_password",
-      full_name:  "test_user_fullname"
-    }
+    @request_params[:data][:type] ='user'
+    @request_params[:data][:attributes] =attributes_for(:user)
   end
-
   teardown do
     Rails.cache.clear
   end
 
-  test "should create user" do
+  test 'should create user' do
     assert_difference('User.count') {
-      post '/api/v1/users',
-      params:@user,
-      headers: {"Accept": "Application/json"}
+      post api_v1_users_path,
+           params:@request_params,
+           headers: {"Accept": "application/vnd.api+json"}
     }
     assert_response 201
   end
+  test 'Should not create user without username' do
+    assert_no_difference('User.count') {
+      @request_params[:data][:attributes][:username] = nil
+      post api_v1_users_path,
+           params: @request_params,
+           headers: {'Accept': 'application/vnd.api+json'}
+    }
+    assert_response 400
+  end
+
+  test 'Should not create user without password' do
+    assert_no_difference('User.count') {
+      @request_params[:data][:attributes][:password] = nil
+      post api_v1_users_path,
+      params:@request_params,
+      headers: {'Accept': 'application/vnd.api+json'}
+    }
+    assert_response 400
+  end
   
-  test "Should not create user without username" do
+  test 'Should not create user without fullname' do
     assert_no_difference('User.count') {
-      post '/api/v1/users',
-      params:
-      {password: @user[:password],
-      full_name: @user[:full_name]},
+      @request_params[:data][:attributes][:full_name] = nil
+      post api_v1_users_path,
+      params:@request_params,
       headers: {"Accept": "Application/json"}
-      # binding.pry
-  }
-  assert_response 400
-  end
-
-  test "Should not create user without password" do
-    assert_no_difference('User.count') {
-      post '/api/v1/users',
-      params:
-      {
-      username:@user[:username],
-      full_name: @user[:full_name]},
-      headers: {"Accept": "Application/json"}
-  }
-  assert_response 400
-  end
-
-  test "Should not create user without fullname" do
-    assert_no_difference('User.count') {
-      post '/api/v1/users',
-      params:
-      {
-      username:@user[:username],
-      password:@user[:password]},
-      headers: {"Accept": "Application/json"}
-  }
-  assert_response 400
+    }
+    assert_response 400
   end
 end

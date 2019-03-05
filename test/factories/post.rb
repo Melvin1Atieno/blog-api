@@ -6,8 +6,7 @@ FactoryBot.define do
     factory :post_with_comments do
       transient do
         comments_count { 2 }
-      end
-       
+      end  
       after(:create) do |post, evaluator|
         create_list(:comment, evaluator.comments_count, post: post)
       end
