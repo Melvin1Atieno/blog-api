@@ -1,30 +1,28 @@
 class Api::V1::AuthenticationController < ApplicationController
   skip_before_action :authenticate_request
   def authenticate
-    @auth_token = authenticate_user(auth_params[:username], auth_params[:password])
-    binding.pry
-    if !@auth_token.nil? || !@auth_token.empty?
-      render json: { auth_token: auth_token }, status: 200
+    @auth_token = authenticate_user(auth_params[:attributes][:username], auth_params[:attributes][:password])
+    if !@auth_token.nil?
+      render json: { auth_token: @auth_token }, status: 200
     else
-      render json: { error: errors }, status: :unauthorized
+      render json: { error: @errors }, status: 401
     end
   end
 
-
   private
 
-  def auth_params
-    params.permit(:username, :password)
-  end
-  
   def authenticate_user(username, password)
+    @errors = {}
     user = User.find_by_username(username)
     if user && user.authenticate(password)
       return JsonWebToken.encode(user_id: user.id)
     else
-      errors[:user_authentication] = 'Invalid credentials'
+      @errors[:user_authentication] = 'Invalid credentials'
+      return nil
     end
   end
-
-
+ 
+  def auth_params
+    params.require(:data).permit(:type, attributes:[:username, :password])
+  end
 end

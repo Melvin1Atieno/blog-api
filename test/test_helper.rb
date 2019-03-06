@@ -14,19 +14,21 @@ class ActiveSupport::TestCase
   end
 end
 class ActionDispatch::IntegrationTest
-  include FactoryBot::Syntax::Methods
+  # include FactoryBot::Syntax::Methods
 
   def authenticated_user
-    @user = create(user)
-    # authenticate user
-    binding.pry
-    post api_v1_authenticate_path, 
-    params: @user,
+    @user = create(:user)
+    post api_v1_authenticate_path,params:{ data: {
+                                                   type: "auth",
+                                                    attributes: {
+                                                      username: @user.username,
+                                                      password: @user.password
+                                                    }
+                                                 }
+                                         },
     headers: {'Accept': 'application/vnd.api+json'}
-    # get authorization token
     @valid_token = JSON.parse(response.body)
-  return @valid_token
-  
+    return @valid_token
   end
 end
 

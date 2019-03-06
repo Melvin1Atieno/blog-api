@@ -3,58 +3,49 @@ require 'test_helper'
 class Api::V1::CommentsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
+    @request_params[:data][:type] = 'comment'
+    @request_params[:data][:attributes] = attributes_for(:comment)
     @token = authenticated_user
-    @valid_user = User.find_by_username("valid_user")
-    @comment = comments(:one)
-    @post = posts(:one)
+    @post = create(:post_with_comments)
   end
 
   teardown do
     Rails.cache.clear
   end
 
-  test "Should get all comments associated with a post" do
-    get api_v1_post_comments_path(@post.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+  test "Should get all comments to a post" do
+    get api_v1_post_comments_path(post_id:@post.id),
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     assert_response 200
   end
 
-  test "Should be able to get all comments associated with user" do
-    get api_v1_user_comments_path(user_id:@valid_user.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-    assert_response 200
-  end
 
   test "should be able to create a comment for a specific post" do
     assert_difference('Comment.count') do
-      post api_v1_post_comments_path(user_id:@valid_user.id, post_id:@post.id),
-      params: {
-        body:"This is a new comment"
-      },
-      headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-      # binding.pry
+      @request_params[:data][:attributes][:body] = "This is one of the best"
+      post api_v1_post_comments_path(post_id:@post.id),
+      params: @request_params,
+      headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     end
     assert_response 201
   end
   
   test "Should be able to get a single comment" do
-    get api_v1_comment_path(id:@comment.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+    get api_v1_comment_path(id:@post.comments[1].id),
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     assert_response 200
   end
 
-  test "should be able to update a specific comment" do
-    patch api_v1_comment_path(id:@comment.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-    assert_response 200
+  test "should not  update a  comment if not owner" do
+    patch api_v1_comment_path(id:@post.comments[1].id),
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
+    assert_response 401
   end
 
-  test "should delete a specific comment" do
-    assert_difference('Comment.count', -1) do
-    delete api_v1_comment_path(user_id:@valid_user.id,id:@comment.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-    end
-    assert_response 204
+  test "should not delete a coment without post/comment ownership" do
+    delete api_v1_comment_path(id:@post.comments[1].id),
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
+    assert_response 401
   end
 
 end
