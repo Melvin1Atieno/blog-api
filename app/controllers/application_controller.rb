@@ -4,10 +4,10 @@ class ApplicationController < ActionController::API
 
   private
   def authenticate_request
-    current_user = authorize_user(request.headers)
+    @current_user = authorize_user(request.headers)
     render json: {
                   error: 'Not authorized'
-                  }, status: 401 unless current_user
+                  }, status: 401 unless @current_user
   end
 
   # check if user exists.
