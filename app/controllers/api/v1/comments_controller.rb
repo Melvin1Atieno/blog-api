@@ -14,10 +14,14 @@ module Api
       end
      
       # post a comment ot a post
-      def create 
+      def create
+        # get the post
         @post = Post.find_by_id(params[:post_id])
+        # create post to comment
         @post_comment = @post.comments.create(comment_params[:attributes])
+        # associate comment before save(comment cannot be saved without user_id)
         @post_comment.user_id = @current_user.id
+        # save comment
         @post_comment.save
         render json: response_params(@post.comments.last), status: 201
       end
@@ -27,12 +31,12 @@ module Api
         @comment = Comment.find_by_id(params[:id])
         @post_owner_id = (Post.find_by_id(@comment.post_id)).user_id
         if @comment.nil?
-          render json:{ data: "null"},status: 404
+          render json: { data: "null"},status: 404
         elsif @comment.user_id == @current_user.id || @post_owner_id == @current_user.id
           @comment.destroy
           render json: response_params("deleted"), status: 204
         else
-          render json:response_params({error: "can only delete own comment or comment on your own post"}), status: 401
+          render json: response_params({error: "can only delete own comment or comment on your own post"}), status: 401
         end
       end
 
@@ -51,7 +55,7 @@ module Api
         @comment = Comment.find_by_id(params[:id])
         if @comment.nil?
           render json:{ data: "null"}, status: 404
-        elsif @current_user.id == @comment.id
+        elsif @current_user.id == @comment.user_id
           @updated_comment = @comment.update(comment_params[:attributes])
           render json:(response_params(@updated_comment)), status: 200
         else
@@ -67,7 +71,7 @@ module Api
 
       def response_params(comment_attributes)
         return {data: {type: 'comment',
-                     attributes: comment_attributes
+                        attributes: comment_attributes
                     }}
       end 
 

@@ -41,15 +41,15 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response 404
   end
 
-  test "Should be able to update single post" do
+  test "Should not update post if not owner" do
     @request_params[:data][:attributes][:title] = "updated title"
     @request_params[:data][:attributes][:text] = "updated text"
     patch api_v1_post_path(@post.id),params: @request_params,
     headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     @post.reload
-    assert_response 200
-    assert_equal "updated title", @post.title
-    assert_equal "updated text", @post.text
+    assert_response 401
+    assert_not_equal "updated title", @post.title
+    assert_not_equal "updated text", @post.text
   end
 
   test "Should return error if requested post for update does not exist" do
@@ -62,12 +62,10 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response 404
   end
 
-  test "Should delete post" do
-    assert_difference('Post.count', -1) do
+  test "Should not delete post if not owner" do
       delete api_v1_post_path(id:@post.id),
       headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
-    end
-    assert_response 204
+    assert_response 401
   end
  
 
