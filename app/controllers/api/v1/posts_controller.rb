@@ -5,17 +5,14 @@ module Api
      #Get all posts 
       def index
         @posts = Post.order('created_at DESC')
-        render json:{data:{
-                             type: 'post',	
-                             attributes: {data:@posts}	
-                            }}, status: 200
+        render json:{ data:{ type: 'post', attributes: {data:@posts} } }, status: 200
       end
 
       # Get post by id
       def show
         @post = Post.find_by_id(params[:id])
         if @post.nil?
-          render json: { data: "null"}, status: 404
+          render json: { data: "null" }, status: 404
         else
           render json: response_params(@post), status: 200
         end
@@ -31,12 +28,12 @@ module Api
       def update
         @post = Post.find_by_id(params[:id])
         if @post.nil?
-          render json: {data: "null"}, status: 404
+          render json: { data: "null" }, status: 404
         elsif @current_user.id == @post.user_id
           @updated_post = @post.update(post_params[:attributes])
           render json: response_params(@updated_post), status: 200
         else
-          render json:response_params({error:"Can only update own post"}), status: 401
+          render json:response_params({ error:"Can only update own post" }), status: 401
         end
       end
 
@@ -44,14 +41,12 @@ module Api
       def destroy
         @post = Post.find_by_id(params[:id])
         if @post.nil?
-          render json: { data: "null"}, status: 404
+          render json: { data: "null" }, status: 404
         elsif @post.user_id == @current_user.id
           @post.destroy
-          render json: {data:{type: 'post',
-                              attributes: {data: "deleted"}
-                       }}, status: 204
+          render json: { data:{ type: 'post', attributes: { data: "deleted" } } }, status: 204
         else
-          render json: response_params({error: "Can only delete own post"}), status: 401
+          render json: response_params({ error: "Can only delete own post" }), status: 401
         end
       end
 
@@ -63,10 +58,7 @@ module Api
       end
 
       def response_params(post_attributes)
-        return {data: {
-            type: 'post',
-            attributes: post_attributes
-            }}
+        return { data: { type: 'post', attributes: post_attributes }}
       end    
     end
   end

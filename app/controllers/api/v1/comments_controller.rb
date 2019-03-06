@@ -66,7 +66,7 @@ module Api
       end
 
       def response_params(comment_attributes)
-        return {data: {type: 'comment',attributes: comment_attributes}}
+        return { data: { type: 'comment',attributes: comment_attributes } }
       end 
 
     end

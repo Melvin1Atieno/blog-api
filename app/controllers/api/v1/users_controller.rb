@@ -7,10 +7,9 @@ module Api
         if @user.save
           render json:@user, status: 201
         else
-          render json: {errors:[{
-                                    status: "400",
-                                    title: "Bad request",
-                                    detail:@user.errors
+          render json: { errors:[{ status: "400",
+                                  title: "Bad request",
+                                  detail:@user.errors
                                 }]
                     }, status: 400
         end
