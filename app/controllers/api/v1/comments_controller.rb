@@ -6,11 +6,7 @@ module Api
       # get all posts comments
       def index
         @post = Post.find_by_id(params[:post_id])
-        render json:{data:{ 
-                          type: 'comment',	
-                          attributes:{ data:@post.comments }
-                          }
-                    },status: 200
+        render json:{data:{ type: 'comment', attributes:{ data:@post.comments }}},status: 200
       end
      
       # post a comment ot a post
@@ -44,7 +40,7 @@ module Api
       def show
         @comment = Comment.find_by_id(params[:id])
         if @comment.nil?
-          render json: { data: "null"}, status: 404
+          render json: { data: "null" }, status: 404
         else
           render json: response_params(@comment), status: 200
         end
@@ -70,9 +66,7 @@ module Api
       end
 
       def response_params(comment_attributes)
-        return {data: {type: 'comment',
-                        attributes: comment_attributes
-                    }}
+        return {data: {type: 'comment',attributes: comment_attributes}}
       end 
 
     end
