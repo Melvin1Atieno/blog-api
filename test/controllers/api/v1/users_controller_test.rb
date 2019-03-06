@@ -14,7 +14,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_difference('User.count') {
       post api_v1_users_path,
            params:@request_params,
-           headers: {"Accept": "application/vnd.api+json"}
+           headers: {'Accept': 'application/vnd.api+json'}
     }
     assert_response 201
   end

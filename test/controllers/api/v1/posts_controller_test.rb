@@ -3,56 +3,53 @@ require 'test_helper'
 class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
  
   setup do
+    @request_params[:data][:type] = 'post'
+    @request_params[:data][:attributes] = attributes_for(:post)
     @token = authenticated_user
-
-    @post = posts(:one)
+    @post = create(:post)
   end
-
+  
   teardown do
     Rails.cache.clear
   end
- 
+  
   test "Should return all posts" do	
-      get api_v1_posts_path,
-      headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-      assert_response 200
-    end
-    
-    test "Should create a new post" do
-      assert_difference('Post.count') do
-        post api_v1_user_posts_path(user_id: @valid_user.id),
-        params: {
-          title: @post.title,
-          text: @post.text
-        },
-        headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+    get api_v1_posts_path,
+    headers: {"Accept" => "application/vnd.api+json", "Authorization" => @token["auth_token"]}
+    assert_response 200
+  end
+  
+  test "should get post by id" do
+    get api_v1_post_path(id:@post.id),
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
+    assert_response 200
+  end
+  
+  test "Should create a new post" do
+    assert_difference('Post.count') do
+      post api_v1_user_posts_path(user_id: @user.id),
+      params:@request_params,
+      headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     end
     assert_response 201
   end
 
-  test "should get post by id" do
-    get api_v1_post_path(@post.id),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
-    assert_response 200
-  end
 
   test "Should return error if post with given id does not exist" do
     get api_v1_post_url(id: 1234),
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     assert_response 404
   end
 
   test "Should be able to update single post" do
-      patch api_v1_post_path(@post.id),
-      params: { 
-        title: "updated title",
-        text: "updated text"
-      },
-    headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+    @request_params[:data][:attributes][:title] = "updated title"
+    @request_params[:data][:attributes][:text] = "updated text"
+    patch api_v1_post_path(@post.id),params: @request_params,
+    headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     @post.reload
     assert_response 200
-    assert_equal "updated title", @post.title 
-    assert_equal "updated text", @post.text 
+    assert_equal "updated title", @post.title
+    assert_equal "updated text", @post.text
   end
 
   test "Should return error if requested post for update does not exist" do
@@ -61,14 +58,14 @@ class Api::V1::PostsControllerTest < ActionDispatch::IntegrationTest
       title: "updated title",
       text: "updated text"
     },
-  headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+  headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     assert_response 404
   end
 
   test "Should delete post" do
     assert_difference('Post.count', -1) do
       delete api_v1_post_path(id:@post.id),
-      headers: {"Accept": "Application/json", "Authorization": @token["auth_token"]}
+      headers: {"Accept": "application/vnd.api+json", "Authorization": @token["auth_token"]}
     end
     assert_response 204
   end

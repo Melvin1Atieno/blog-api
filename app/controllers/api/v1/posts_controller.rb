@@ -1,117 +1,71 @@
 require 'pry'
 module Api
-    module V1
-        class PostsController < ApplicationController
+  module V1
+    class PostsController < ApplicationController
 
+     #Get all posts 
+      def index
+        @posts = Post.order('created_at DESC')
+        render json:{data:{
+                             type: 'post',	
+                             attributes: {data:@posts}	
+                            }}, status: 200
+      end
 
-            #GET /posts
-            def index
-                @posts = Post.order('created_at DESC')
-                render json: {data:{	
-                    type: 'post',	
-                    attributes: {	
-                        data:@posts 	
-                    }	
-                }}, status: 200
-            end
-
-            # get post with id
-            def show
-                if Post.find_by_id(params[:id]).nil?
-                    render json: { 
-                       data: "null"
-
-                    }, status: 404
-
-                else
-                  @post = Post.find(params[:id])
-                  binding.pry
-                  render json: {data:{
-                    type: 'post',
-                    id: @post.id,
-                    attributes: {
-                        title: @post.title,
-                        text: @post.text,
-                        author_id: @post.user_id
-                    }
-                }}, status: 200
-                end
-            end
-
-            # create a post
-            def create
-                @user = User.find(params[:user_id])
-                @post = Post.new(post_params)
-                @user.posts << @post
-                # binding.pry
-                if @post.save
-                    render json: {data:{
-                            type: 'post',
-                            id: @post.id,
-                            attributes: {
-                                title: @post.title,
-                                text: @post.text,
-                                author_id:@post.user_id
-                            }
-                        }}, status: 201
-                else
-                    render json: { 
-                        errors:[
-                        {
-                            status: "400",
-                            title: "Bad request",
-                            detail: @post.errors
-                        }
-                    ]
-
-                    }, status: 400
-                end
-            end
-             # update an article
-            def update
-                if Post.find_by_id(params[:id]).nil?
-                    render json: { 
-                       data: "null"
-
-                    }, status: 404
-                else
-                    @post = Post.find(params[:id])
-                    @updated_post = @post.update(post_params)
-                    render json: {data:{
-                        type: 'post',
-                        attributes: {
-                            title: @post.title,
-                            text: @post.text,
-                            author_id: @post.user_id
-
-                        }
-                    }}, status: 200
-                end
-            end
-
-            def destroy
-                if Post.find_by_id(params[:id]).nil?
-                    render json: { 
-                       data: "null"
-                    }, status: 404
-                else
-                    @post = Post.find(params[:id])
-                    @post.destroy
-                    render json: {data:{
-                        type: 'post',
-                        attributes: {
-                            data: "deleted"
-                        }
-                    }}, status: 204
-                end
-            end
-
-            private
-
-            def post_params
-                params.permit(:title, :text, :user_id)
-            end
+      # Get post by id
+      def show
+        @post = Post.find_by_id(params[:id])
+        if @post.nil?
+          render json: { data: "null"}, status: 404
+        else
+          render json: response_params(@post), status: 200
         end
-        
+      end
+
+      # create a post
+      def create
+        @user = User.find(params[:user_id])
+        @user.posts.create(post_params[:attributes])
+        render json: response_params(@user.posts.last), status: 201
+      end
+
+      #  update an article
+      def update
+        @post = Post.find_by_id(params[:id])
+        if @post.nil?
+          render json: {data: "null"}, status: 404
+        else
+          @updated_post = @post.update(post_params[:attributes])
+          render json: response_params(@updated_post), status: 200
+        end
+      end
+
+      # Delete an article
+      def destroy
+        @post = Post.find_by_id(params[:id])
+        if @post.nil?
+          render json: { data: "null"}, status: 404
+        else
+          @post.destroy
+          render json: {data:{type: 'post',
+                              attributes: {data: "deleted"}
+                       }}, status: 204
+        end
+      end
+
+
+      private
+
+      def post_params
+        params.require(:data).permit(:type ,attributes:[:title, :text, :user_id])
+      end
+
+      def response_params(post_attributes)
+        return {data: {
+            type: 'post',
+            attributes: post_attributes
+            }}
+      end    
     end
+  end
 end
